@@ -48,6 +48,7 @@ def write_err(s: str):
 
 
 def pygame_testdraw(文本, 字体大小, 位置, 字体颜色=(255, 255, 255), 字体背景颜色=(0, 0, 0)):
+    log(文本, 'main', 'info')
     font = pygame.font.Font('C:/Windows/Fonts/STKAITI.TTF', 字体大小)
     text = font.render(文本, True, 字体颜色, 字体背景颜色)
     textRect = text.get_rect()
