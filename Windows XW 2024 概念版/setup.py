@@ -19,6 +19,7 @@ now = datetime.now
 屏幕宽度 = win32api.GetSystemMetrics(0)
 # noinspection PyUnresolvedReferences
 屏幕高度 = win32api.GetSystemMetrics(1)
+背景颜色 = (28, 4, 84)
 
 # /BLACKBOXES/LOG
 if not os.path.exists('debug.log'):  # 文件不存在时创建
@@ -47,7 +48,7 @@ def write_err(s: str):
     sys.stderr.write(s + '\n')
 
 
-def pygame_testdraw(文本, 字体大小, 位置, 字体颜色=(255, 255, 255), 字体背景颜色=(0, 0, 0)):
+def pygame_绘制文本(文本, 字体大小, 位置, 字体颜色=(255, 255, 255), 字体背景颜色=背景颜色):
     log(文本, 'main', 'info')
     font = pygame.font.Font('C:/Windows/Fonts/STKAITI.TTF', 字体大小)
     text = font.render(文本, True, 字体颜色, 字体背景颜色)
@@ -63,10 +64,12 @@ def main():
     screen = pygame.display.set_mode((屏幕宽度 - 10, 屏幕高度 - 100))
     pygame.display.set_caption('Windows XW 2024 概念版 Setup')
     pygame.display.set_icon(pygame.image.load("setup.ico"))
-    # screen.fill((0, 0, 0))
-    pygame_testdraw('Windows XW 2024 概念版 Setup', 50, (0, 0))
+    screen.fill(背景颜色)
+    pygame_绘制文本('Windows XW 2024 概念版 Setup', 50, (0, 0), )
+    pygame_绘制文本('Boot at BIOS', 30, (0, 50))
+    pygame_绘制文本('Boot with USB Drive', 30, (0, 100))
 
-    def ifquit():
+    def 确认退出():
         return askokcancel('确认退出?', '退出Windows XW 2024 安装程序，你将丢失所有安装进度!')
 
     ifrun = True
@@ -75,12 +78,12 @@ def main():
         # 循环获取事件，监听事件状态
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                if ifquit():
+                if 确认退出():
                     pygame.quit()
                     ifrun = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if ifquit():
+                    if 确认退出():
                         pygame.quit()
                         ifrun = False
 
@@ -91,4 +94,7 @@ def main():
 
 
 if '__main__' == __name__:
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('强制退出')
